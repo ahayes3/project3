@@ -74,6 +74,8 @@ object Main extends Combinators
 			{
 
 				val a = eval(l, str)
+				if(a.equals(""))
+					index-=1
 				index += 1
 				a + eval(r, str)
 			}
@@ -82,14 +84,21 @@ object Main extends Combinators
 			{
 				val position = index
 				val a = eval(l, str)
+				val tempindex=index
 				index=position
 				val b = eval(r, str)
 
-				if ((index < str.length) && a.equals(str.substring(position, index+1)))
+				if ((tempindex < str.length) && a.equals(str.substring(position, tempindex+1)))
+					{
+						index = tempindex
+						a
+					}
+				else if((tempindex < str.length) && a.equals(str.substring(position)))
+				{
+					index = tempindex
 					a
-				else if((index < str.length) && a.equals(str.substring(position)))
-					a
-				else if ((index >= str.length) && a.equals(str.substring(position)))
+				}
+				else if ((tempindex >= str.length) && a.equals(str.substring(position)))
 					a
 				else if ((index<str.length)&&b.equals(str.substring(position, index+1)))
 					b
@@ -142,7 +151,7 @@ object Main extends Combinators
 
 	def main(args: Array[String])
 	{
-		val pattern = "ab?c"
+		val pattern = "a(bc)?(de)?f"
 
 		println("abc".substring(1, 1))
 		val exp: Tree = parseAll(s, pattern).get
