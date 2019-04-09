@@ -45,18 +45,18 @@ object Main extends Combinators
 
 	var index = 0
 	//var position=0
-	var matched = ""
-	var matches = true
+	//var matched = ""
+	//var matches = true
 
 	def eval1(t: Tree, str: String): Boolean =
 	{
 		index = 0
 		//position=0
-		matched = ""
-		matches = true
+		//matched = ""
+		var matches = true
 
 		val a = eval(t, str)
-		println(a)
+		//println(a)
 		if (a.equals(str))
 			matches
 		else
@@ -74,8 +74,8 @@ object Main extends Combinators
 			{
 
 				val a = eval(l, str)
-				if(a.equals(""))
-					index-=1
+				if (a.equals(""))
+					index -= 1
 				index += 1
 				a + eval(r, str)
 			}
@@ -84,30 +84,30 @@ object Main extends Combinators
 			{
 				val position = index
 				val a = eval(l, str)
-				val tempindex=index
-				index=position
+				val tempindex = index
+				index = position
 				val b = eval(r, str)
 
-				if ((tempindex < str.length) && a.equals(str.substring(position, tempindex+1)))
-					{
-						index = tempindex
-						a
-					}
-				else if((tempindex < str.length) && a.equals(str.substring(position)))
+				if ((tempindex < str.length) && a.equals(str.substring(position, tempindex + 1)))
+				{
+					index = tempindex
+					a
+				}
+				else if ((tempindex < str.length) && a.equals(str.substring(position)))
 				{
 					index = tempindex
 					a
 				}
 				else if ((tempindex >= str.length) && a.equals(str.substring(position)))
 					a
-				else if ((index<str.length)&&b.equals(str.substring(position, index+1)))
+				else if ((index < str.length) && b.equals(str.substring(position, index + 1)))
 					b
-				else if((index < str.length) && b.equals(str.substring(position)))
+				else if ((index < str.length) && b.equals(str.substring(position)))
 					b
-				else if((index>= str.length)&&b.equals(str.substring(position)))
+				else if ((index >= str.length) && b.equals(str.substring(position)))
 					b
-				else if(b.equals("EMPTY"))
-						""
+				else if (b.equals("EMPTY"))
+					""
 				else
 					"NULL"
 
@@ -115,10 +115,10 @@ object Main extends Combinators
 
 			case Letter(n) =>
 			{
-				if(n.equals(""))
-					{
-						"EMPTY"
-					}
+				if (n.equals(""))
+				{
+					"EMPTY"
+				}
 				else
 				{
 					if (index < str.length)
@@ -131,8 +131,8 @@ object Main extends Combinators
 							//matched += n
 							n
 						}
-						else if(n.equals("."))
-							str.substring(index,index+1)
+						else if (n.equals("."))
+							str.substring(index, index + 1)
 						else
 						{
 							//matches = false
@@ -151,20 +151,26 @@ object Main extends Combinators
 
 	def main(args: Array[String])
 	{
+		val sc = new Scanner(System.in)
+		print("Pattern: ")
+		val pat = sc.nextLine()
 		val pattern = "a(bc)?(de)?f"
 
-		println("abc".substring(1, 1))
-		val exp: Tree = parseAll(s, pattern).get
+		val exp: Tree = parseAll(s, pat).get
 
 		println(exp)
-		val sc = new Scanner(System.in)
+		print("String: ")
 		var ans = sc.nextLine()
 
 
 		while (!ans.equals("exit"))
 		{
 			var a = eval1(exp, ans)
-			println(a)
+			if (a)
+				println("match")
+			else
+				println("no match")
+			print("String: ")
 			ans = sc.nextLine()
 
 		}
